@@ -1,123 +1,91 @@
-# Lesson 01 - HTML5 Canvas Basics
+# Lesson 02 - CreateJS Basics
 The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, be sure to use its full raw path, i.e. `https://raw.githubusercontent.com/pamtaro/IntroToHTML5Games/Lesson-01/images/[filename]`.
 
-## Start with the HTML
-Create your HTML file and add the boilerplate stuff:
+## CreateJS?
+[CreateJS](http://createjs.com/) is one of many JavaScript libraries that makes building a game easier. CreateJS is useful for building many things, not just games. It is composed of 4 libraries that can be used together or individually: **EaselJS, TweenJS, SoundJS, and PreloadJS**.
+**Documentation:** http://createjs.com/Docs
+
+### Installing CreateJS
+To start using CreateJS, add the following script tag before your own game script:
 ```
-<html>
-    <head></head>
-    <body></body>
-</html>
+<script src="https://code.createjs.com/createjs-2014.12.12.min.js"></script>
 ```
 
-The only HTML we really need to build an HTML5 game is the `<canvas>` element. Add that inside the `<body>` tags:
+## Shapes, Text, and Image the CreateJS way
+Empty the previous version of the JavaScript file (if you've come from Lesson 01), so that you only have the boilerplate & a reference to the game Canvas:
 ```
-<canvas id="gameCanvas" width="800" height="600"></canvas>
-```
-
-Since we can't really see the canvas, add some CSS in the `<head>` tags to give the canvas a border:
-```
-<style>
-    #gameCanvas { border: 1px solid black; }
-</style>
-```
-
-Create a separate JavaScript file and add the `<script>` reference for it after the `<canvas>` tags, but before the closing `<body>` tag.
-```
-<script src="game.js"></script>
-</body>
-```
-
-That's it for HTML!
-
-## JavaScript does the rest!
-Open/Navigate to your game's JavaScript file and add the boilerplate for a self-executing anonymous function (because it's good practice):
-```
-(function(){
-    // rest of code goes here
+(function () {
+    var gameCanvas = document.getElementById("gameCanvas");	    
 })();
 ```
 
-### The Canvas and its Context
-To start working with the canvas, add the following code to get a reference to the canvas and its 2d context:
+### The Stage
+CreateJS works with a "stage" object. Add it after the game canvas with the following:
 ```
-var gameCanvas = document.getElementById("gameCanvas");
-var ctx = gameCanvas.getContext("2d");
+var stage = new createjs.Stage(gameCanvas);
 ```
 
-### Drawing Shapes
-To draw a red rectangle and black circle, add the following code where we left off:
-```
-// red rectangle
-ctx.fillStyle = "rgb(255,0,0)";
-ctx.fillRect(0, 0, 100, 200);
+### Shapes
+The Shape class allows you to instantiate shape graphics as objects and add them to the stage:
+```    
+// red rectangle    
+var rectangle = new createjs.Shape();
+rectangle.graphics.beginFill("red").drawRect(0, 0, 100, 200);
 
-// black circle
-ctx.arc(200, 100, 100, 0, Math.PI * 2, false);
-ctx.fillStyle = "blue";
-ctx.fill();
+// blue circle
+var circle = new createjs.Shape();
+circle.graphics.beginFill("blue").drawCircle(200, 100, 100);
 ```
-**Note:** the X and Y coordinates start in the top-left corner of the canvas.
-
-### Draw Text
-Now add the following code to 'draw' text into the canvas:
+After creating the two shapes, you can add both of them at the same time with the `addChild` method and then `update` stage:
+```
+stage.addChild(rectangle, circle);
+stage.update();
+```
+### Text
+Again, text is its own class that you can instantiate and add to the stage:
 ```
 // text
-ctx.font = "30px Tahoma";
-ctx.fillText("Hello world", 10, 250);
+var text = new createjs.Text("Hello World!", "30px Tahoma");
+text.x = 10;
+text.y = 200;
 ```
+_Don't forget_ to add the text object to the `addChild` method to have it drawn to the stage.
 
-**Note:** This is different than adding text in HTML - 'drawing' text makes in non-selectable and saving a canvas makes it part of the image.
+### Images
+Bitmaps are the class to create images. We could just add the source in the constructor of the Bitmap like this:
+```
+// images
+var koala = new createjs.Bitmap("images/koala_idle.png");
+```
+but again, this will not work if the image has not finished loading when it is added to the stage.
 
-### Draw an Image
-Create a new Image element (remember to use the full path if you are using a code playground):
+#### PreloadJS to the rescue!
+Define ALL the assets you want to preload in a manifest JSON object (this can also be in a separate file):
 ```
-// image
-var img = new Image();
-img.src = "images/koala_idle.png";
-```
-To have the image drawn on the canvas, add the following:
-```
-ctx.drawImage(img, 300, 0);
-```
+var manifest = [
+    {id:"koala", src: "images/koala_idle.png"},
+    {id:"cookie", src: "images/pastry_cookie01.png"}
+];
 
-_Did it not work?_ That's because the canvas is trying to draw the image befor the image has finished loading. To wait for the image to load, it needs to handle the `onload` event:
- ```
-img.onload = function() {
-    ctx.drawImage(img, 300, 0);
-};
 ```
-
-### Bonus
-Add the following code along to play an animation of the koala walking:
+Then create a new instance of PreloadJS's LoadQueue to load the manifest:
 ```
-// animate images
-var img1 = new Image();
-img1.src = "koala_walk01.png";
-var img2 = new Image();
-img2.src = "images/koala_walk02.png";
-
-var play1 = true;
-img1.onload = function() {
-    window.setInterval(drawWalk, 100);
-};
-
-function drawWalk() {
-    // clear all
-    ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
-    if (play1 === true) {
-        ctx.drawImage(img1, 400, 0);
-    } else {
-        ctx.drawImage(img2, 400, 0);
-    }
-    play1 = !play1;
+var loader = new createjs.LoadQueue();
+loader.loadManifest(manifest, true);
+```
+And add the event handler to handle the _complete_ event and move the `addChild` and `update` methods of the stage to the end of the event handler so it can draw everything at once:
+```
+loader.on("complete", handleComplete, this);
+function handleComplete(e) {
+    var koala = new createjs.Bitmap(loader.getResult("koala"));
+    koala.x = 300;
+    var cookie = new createjs.Bitmap(loader.getResult("cookie"));
+    cookie.x = 350;
+    stage.addChild(rectangle, circle, text, koala, cookie);
+    stage.update();
 }
 ```
-The canvas has to redraw the whole context in order to display the next image without the previous one interfering. To "erase" just the part of the canvas that contains the image, change the `clearRect` code to the following:
-```
-// clear specific area
-ctx.clearRect(400,0,200,200);
-```
+_Did you notice_ the cookie is over the koala's face? Order matters!
 
 ## Credits
 Art from GameArtGuppy.com
