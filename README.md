@@ -1,89 +1,42 @@
-# Lesson 03 - Animation
+# Lesson 04 - Sprites and Spritesheets
 The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, be sure to use its full raw path, i.e. `https://raw.githubusercontent.com/pamtaro/IntroToHTML5Games/Lesson-01/images/[filename]`.
 
-## Start and Cleanup
-If you are continuing from the previous lesson, remove the JavaScript code for the shapes and text, so that we just have the boilerplate and image related code. Your game JavaScript file should now look like this:
+## Sprites? Spritesheets?
+Sprites are like Bitmap images, except they are animatable. The koala Bitmap before was moving along the X-axis of the canvas, but the koala image itself was not changing. A Sprite may be changed independently from the rest of the elements on the stage.
+
+A Spritesheet is used to determine what a Sprite displays. In CreateJS, a Spritesheet is used to create a new Sprite. It may contain several graphics in one image file that gets split up into frames by defining a width and height. (see new `images/koala_spritesheet.png` file)
+
+## Creating a Spritesheet
+Starting with where we left off in Lesson 03, change the manifest for "koala" to point to `images/koala_spritsheet.png`
+
+In the `handleComplete` function, remove the existing code for "koala" then add the following to create the spritesheet that loads the image:
 ```
-(function () {
-    var gameCanvas = document.getElementById("gameCanvas");
-    var stage = new createjs.Stage(gameCanvas);
-    
-    // images
-    var manifest = [
-        {id:"koala", src: "images/koala_idle.png"},
-        {id:"cookie", src: "images/pastry_cookie01.png"}
-    ];
-    var loader = new createjs.LoadQueue();
-    loader.loadManifest(manifest, true);
-    
-    loader.on("complete", handleComplete, this);
-    function handleComplete(e) {
-        var koala = new createjs.Bitmap(loader.getResult("koala"));
-        koala.x = 300;
-        var cookie = new createjs.Bitmap(loader.getResult("cookie"));
-        cookie.x = 350;
-        stage.addChild(koala, cookie);
-        stage.update();
+var spriteSheet = new createjs.SpriteSheet({
+    framerate: 30,
+    "images": [loader.getResult("koala")],
+    "frames": {"regX": 36, "regY": 51, "width": 72, "height": 102},
+    "animations": {
+        "run": [0, 1, "run"],
+        "jump": [2, 2, "run", 0.1]
     }
-})();
-```
-Before we continue, lets update the position of our koala to be at the bottom left corner and set its registration point to its center:
-``` 
-koala.regX = koala.image.width / 2;
-koala.regY = koala.image.height / 2;
-koala.x = koala.image.width / 2;
-koala.y = stage.canvas.height - (koala.image.height/2);
-```
-Also, let's place the cookie in the top-center of the stage and set the cookie's registration point to its center.
-```
-cookie.regX = cookie.image.width / 2;
-cookie.regY = cookie.image.height / 2;
-cookie.x = stage.canvas.width / 2;
-cookie.y = 0;
-```
-We should also move the declaration of our koala and cookie to the top of the file (but inside the anonymous function) so we can control them outside of the `handleComplete` function.
-
-## The Ticker
-CreateJS's Ticker is the central object to handle updating the stage. The default tick is called 20 times per second (20fps). Let's add the handler for the tick after adding the Bitmaps to the stage and move the stage `update` method in there:
-```
-    stage.addChild(koala, cookie);
-    createjs.Ticker.on("tick", tick);
-}
-function tick(event){
-    stage.update(event);
-}
-```
-Not much to see yet since we're not changing any objects in the tick...
-
-### Moving the koala
-To move the koala 10px with each tick, simply add the following code to reassign the X-coordinate of the koala:
-```
-koala.x = koala.x + 10;
-```
-The koala can now go left-to-right, but it just went off the screen! So to make the koala move back when it hits the edge of the stage, change the "10" to a variable `koalaMoveX` which predefine in the beginning to "10". Then add the following before the `koala.x` assignment:
-```
-if (koala.x >= stage.canvas.width) {
-    koalaMoveX = -10;
-} else if (koala.x <= 0) {
-    koalaMoveX = 10;
-}
+});    
 ```
 
-### Spinning the cookie
-Our cookie would be more intersting if it could spin and move too. Let's make it do that:
+## Creating the Sprite
+Once the spritesheet is defined, we can use it in a new "koala" variable which is now a Sprite:
 ```
-cookie.rotation = cookie.rotation + 45;
-cookie.y = cookie.y + 10;
+koala = new createjs.Sprite(spriteSheet);
+koala.x = koala.getBounds().width / 2;
+koala.y = stage.canvas.height - (koala.getBounds().height/2);
 ```
-Now instead of having the cookie move back up when it reaches the bottom, lets just have it start from the top again, but in a different position!
-```
-if (cookie.y >= stage.canvas.height) {
-    cookie.y = 0;
-    cookie.x = Math.ceil(Math.random() * stage.canvas.width);
-}
+The optional second parameter in the Sprite constructor can be the frame number or name of the animation to play initially when the sprite is drawn. Try changing it between "run" and "jump" here to see the difference, then leave it set to "run".
 
+### Flip the Sprite when it reaches the ends
+Instead of walking backwards, lets flip the koala around whenever it reaches the ends of the stage. Add this to the conditions which check for the koala's X-Position:
 ```
-_This is starting to look like a game now right?..._
+koala.scaleX = koala.scaleX * -1;
+```
+
 
 ## Credits
 Art from GameArtGuppy.com

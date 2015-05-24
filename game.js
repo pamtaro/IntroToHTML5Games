@@ -8,7 +8,7 @@
     var manifest = [
         {
             id: "koala",
-            src: "images/koala_idle.png"
+            src: "images/koala_spritesheet.png"
         },
         {
             id: "cookie",
@@ -20,17 +20,26 @@
 
     loader.on("complete", handleComplete, this);
 
-    function handleComplete(e) {
-        koala = new createjs.Bitmap(loader.getResult("koala"));
-        koala.regX = koala.image.width / 2;
-        koala.regY = koala.image.height / 2;
-        koala.x = koala.image.width / 2;
-        koala.y = stage.canvas.height - (koala.image.height/2);
+    function handleComplete(e) {        
+		var spriteSheet = new createjs.SpriteSheet({
+				framerate: 30,
+				"images": [loader.getResult("koala")],
+				"frames": {"regX": 36, "regY": 51, "width": 72, "height": 102},
+				"animations": {
+					"run": [0, 1, "run"],
+					"jump": [2, 2, "run", 0.1]
+				}
+			});
+		koala = new createjs.Sprite(spriteSheet, "run");
+        koala.x = koala.getBounds().width / 2;
+        koala.y = stage.canvas.height - (koala.getBounds().height/2);
+
         cookie = new createjs.Bitmap(loader.getResult("cookie"));
         cookie.regX = cookie.image.width / 2;
         cookie.regY = cookie.image.height / 2;
         cookie.x = stage.canvas.width / 2;
         cookie.y = 0;
+        
         stage.addChild(koala, cookie);
         createjs.Ticker.on("tick", tick);
     }
@@ -38,8 +47,10 @@
     function tick(event) {
         if (koala.x >= stage.canvas.width) {
             koalaMoveX = -10;
+            koala.scaleX = koala.scaleX * -1;
         } else if (koala.x <= 0) {
             koalaMoveX = 10;
+            koala.scaleX = koala.scaleX * -1;
         }
             
         koala.x = koala.x + koalaMoveX;
