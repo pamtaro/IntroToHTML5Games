@@ -4,7 +4,8 @@
     var score = 0;
     var cookiesGoal = 5;
     var maxTime = 20;
-    
+    var gameOver = false;
+
     var gameCanvas = document.getElementById("gameCanvas");
     var stage = new createjs.Stage(gameCanvas);
 
@@ -50,8 +51,8 @@
 
         var scoreBG = new createjs.Shape();
         scoreBG.graphics.beginFill("#00bb00").drawRect(0, 0, 50, 50);
-        scoreText = new createjs.Text(score, "38px Tahoma", "white");   
-        
+        scoreText = new createjs.Text(score, "38px Tahoma", "white");
+
         var timeBG = new createjs.Shape();
         timeBG.graphics.beginFill("#bb0000").drawRect(50, 0, 50, 50);
         timeText = new createjs.Text(maxTime, "38px Tahoma", "white");
@@ -65,10 +66,10 @@
         createjs.Ticker.on("tick", tick);
         window.setTimeout(countdownTime, 1000);
     }
-    
-    function countdownTime(){
+
+    function countdownTime() {
         maxTime = maxTime - 1;
-        if (maxTime > 0){            
+        if (maxTime > 0) {
             window.setTimeout(countdownTime, 1000);
         }
     }
@@ -89,8 +90,8 @@
         cookie.y = 0;
         cookie.x = Math.ceil(Math.random() * stage.canvas.width);
     }
-    
-    function showEndGame(endMessage){
+
+    function showEndGame(endMessage) {
         stage.removeAllChildren();
         var endText = new createjs.Text(endMessage, "50px Tahoma", "black");
         endText.textAlign = "center";
@@ -98,19 +99,22 @@
         endText.x = stage.canvas.width / 2;
         endText.y = stage.canvas.height / 2;
         stage.addChild(endText);
+        gameOver = true;
     }
 
     function tick(event) {
-        if (score === cookiesGoal && maxTime > 0) {
-            // win
-            showEndGame("You Win!");
-        } else if (maxTime === 0){
-            // lose
-            showEndGame("You Lose!");
-        }
-        
+        if (gameOver === false) {
+            if (score === cookiesGoal && maxTime > 0) {
+                // win
+                showEndGame("You Win!");
+            } else if (maxTime === 0) {
+                // lose
+                showEndGame("You Lose!");
+            }
+          }
+
         timeText.text = maxTime;
-        
+
         var koalaTop = koala.y - (koala.getBounds().height / 2);
         var koalaLeft = koala.x - (koala.getBounds().width / 2);
         var koalaRight = koala.x + (koala.getBounds().width / 2);
