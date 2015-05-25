@@ -15,6 +15,6 @@ Here are the list of lessons that will be covered per branch:
 * **Lesson-03**: Animation
 * **Lesson-04**: Sprites and Spritesheets
 * **Lesson-05**: Controls - Keyboard, Mouse, Touch
-* **Lesson-06**: Collisision Detection
+* **Lesson-06**: Collision Detection
 * **Lesson-07**: Backgrounds and Sounds
 * **Lesson-08**: Game Tracking
