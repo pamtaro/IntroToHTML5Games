@@ -53,11 +53,7 @@
     }
     
     function handleKeyDown(event){
-        if (event.keyCode == 13) { 
-            // enter is pressed
-            jump();
-        }
-        else if (event.keyCode == 32) { 
+        if (event.keyCode == 32) { 
             // spacebar is pressed
             changeDirections();
         }
