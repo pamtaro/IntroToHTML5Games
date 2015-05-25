@@ -31,8 +31,7 @@
                 "height": 102
             },
             "animations": {
-                "run": [0, 1, "run"],
-                "jump": [2, 2, "run", 0.1]
+                "run": [0, 1, "run"]
             }
         });
         koala = new createjs.Sprite(spriteSheet, "run");
@@ -67,10 +66,6 @@
     function changeDirections(){
         koalaMoveX = koalaMoveX * -1;
         koala.scaleX = koala.scaleX * -1;
-    }
-
-    function jump() {
-        koala.gotoAndPlay("jump");
     }
 
     function tick(event) {
