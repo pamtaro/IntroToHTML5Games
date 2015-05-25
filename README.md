@@ -32,7 +32,7 @@ function handleKeyDown(event){
 **Note:** We can also refactor our code in the tick function to use this `changeDirections` function.
 
 ### Flip the Sprite when it reaches the ends
-Instead of walking backwards, lets flip the koala around as it reaches the ends of the stage. Add this to the conditions which check for the koala's X-Position:
+Instead of walking backwards, lets flip the koala around when the `changeDirections` function is called:
 ```
 koala.scaleX = koala.scaleX * -1;
 ```
