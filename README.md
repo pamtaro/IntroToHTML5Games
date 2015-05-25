@@ -63,6 +63,6 @@ We can then copy the same movement logic for the ground and reuse it for the `fl
 flower.x = flower.x + (koalaMoveX*foregroundSpeed);
 tree.x = tree.x + (koalaMoveX*foregroundSpeed);
 ```
-_**Congratulations!**_ You're game looks great!
+_**Congratulations!**_ Your game looks great!
 ## Credits
 Art from GameArtGuppy.com
