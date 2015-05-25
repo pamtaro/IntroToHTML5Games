@@ -36,10 +36,8 @@
     }
 
     function tick(event) {
-        if (koala.x >= stage.canvas.width) {
-            koalaMoveX = -10;
-        } else if (koala.x <= 0) {
-            koalaMoveX = 10;
+        if (koala.x >= stage.canvas.width || koala.x <= 0) {
+            koalaMoveX = koalaMoveX * -1;
         }
             
         koala.x = koala.x + koalaMoveX;

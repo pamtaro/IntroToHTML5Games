@@ -68,6 +68,12 @@ if (koala.x >= stage.canvas.width) {
     koalaMoveX = 10;
 }
 ```
+_Did you notice how similar those statements are?_ Let's refactor this logic into one `if` statement:
+```
+if (koala.x >= stage.canvas.width || koala.x <= 0) {
+    koalaMoveX = koalaMoveX * -1;
+}
+```
 
 ### Spinning the cookie
 Our cookie would be more intersting if it could spin and move too. Let's make it do that:
