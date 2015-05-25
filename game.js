@@ -21,16 +21,15 @@
     loader.on("complete", handleComplete, this);
 
     function handleComplete(e) {        
-		var spriteSheet = new createjs.SpriteSheet({
-				framerate: 30,
-				"images": [loader.getResult("koala")],
-				"frames": {"regX": 36, "regY": 51, "width": 72, "height": 102},
-				"animations": {
-					"run": [0, 1, "run"],
-					"jump": [2, 2, "run", 0.1]
-				}
-			});
-		koala = new createjs.Sprite(spriteSheet, "run");
+	var spriteSheet = new createjs.SpriteSheet({
+			framerate: 30,
+			"images": [loader.getResult("koala")],
+			"frames": {"regX": 36, "regY": 51, "width": 72, "height": 102},
+			"animations": {
+				"run": [0, 1, "run"]
+			}
+		});
+	koala = new createjs.Sprite(spriteSheet, "run");
         koala.x = koala.getBounds().width / 2;
         koala.y = stage.canvas.height - (koala.getBounds().height/2);
 
@@ -47,10 +46,8 @@
     function tick(event) {
         if (koala.x >= stage.canvas.width) {
             koalaMoveX = -10;
-            koala.scaleX = koala.scaleX * -1;
         } else if (koala.x <= 0) {
             koalaMoveX = 10;
-            koala.scaleX = koala.scaleX * -1;
         }
             
         koala.x = koala.x + koalaMoveX;
