@@ -1,6 +1,7 @@
 (function () {
     var koala, cookie, scoreText;
     var koalaMoveX = 10;
+    var score = 0;
     var gameCanvas = document.getElementById("gameCanvas");
     var stage = new createjs.Stage(gameCanvas);
 
@@ -45,8 +46,8 @@
         cookie.y = 0;
 
         var scoreBG = new createjs.Shape();
-        scoreBG.graphics.beginFill("#bb0000").drawRect(0, 0, 50, 50);
-        scoreText = new createjs.Text("0", "38px Tahoma", "white");
+        scoreBG.graphics.beginFill("#00bb00").drawRect(0, 0, 50, 50);
+        scoreText = new createjs.Text(0, "38px Tahoma", "white");
 
         stage.addChild(koala, cookie, scoreBG, scoreText);
 
@@ -81,9 +82,8 @@
         if (cookieBottom >= koalaTop && cookie.x >= koalaLeft && cookie.x <= koalaRight) {
             resetCookie();
 
-            var scoreInt = parseInt(scoreText.text);
-            scoreInt++;
-            scoreText.text = scoreInt;
+            score++;
+            scoreText.text = score;
         }
 
         if (koala.x >= stage.canvas.width || koala.x <= 0) {

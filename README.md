@@ -5,11 +5,11 @@ The source files of this branch shows the completed version of what will be buil
 Since we now have a moveable/controllable koala and cookies falling from the sky, we'll make the object of the game for the koala to catch a certain number of cookies before it touches the ground. For that, we'll need to add a scoreboard. Let's start with a background for the scoreboard:
 ```
 var scoreBG = new createjs.Shape();
-scoreBG.graphics.beginFill("#bb0000").drawRect(0, 0, 50, 50);
+scoreBG.graphics.beginFill("#00bb00").drawRect(0, 0, 50, 50);
 ```
-We'll also need Text over the Background to display the current score. Declare the `scoreText` variable at the top (so it can be updated anywhere in the JavaScript file). Then create the Text object:
+We'll also need Text over the Background to display the current score. Declare the `score` and `scoreText` variables at the top (so it can be updated anywhere in the JavaScript file) and set the `score` to 0. Then create the Text object:
 ```
-scoreText = new createjs.Text("0", "38px Tahoma", "white");    
+scoreText = new createjs.Text(score, "38px Tahoma", "white");    
 ```
 Append both of these to the stage and remember- _order matters_!
 
@@ -28,11 +28,10 @@ if (cookieBottom >= koalaTop && cookie.x >= koalaLeft && cookie.x <= koalaRight)
 }
 ```
 
-In order to update the Score, we'll need to change the text to a Number so that we can increment it. Place the following code to update the score inside the prevous logic:
+Increment `score` and re-assign the text of the `scoreText`. Place the following code to update the score inside the prevous logic:
 ```
-var scoreInt = parseInt(scoreText.text);
-scoreInt++;
-scoreText.text = scoreInt;
+score++;
+scoreText.text = score;
 ```
 
 We don't want to cookie to continue moving down the stage after it has collided with the koala, so we'll want to reset it right away:
