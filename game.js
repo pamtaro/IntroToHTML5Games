@@ -1,6 +1,10 @@
 (function () {
-    var koala, cookie, scoreText;
+    var koala, cookie, scoreText, timeText;
     var koalaMoveX = 10;
+    var score = 0;
+    var cookiesGoal = 5;
+    var maxTime = 20;
+    
     var gameCanvas = document.getElementById("gameCanvas");
     var stage = new createjs.Stage(gameCanvas);
 
@@ -45,15 +49,28 @@
         cookie.y = 0;
 
         var scoreBG = new createjs.Shape();
-        scoreBG.graphics.beginFill("#bb0000").drawRect(0, 0, 50, 50);
-        scoreText = new createjs.Text("0", "38px Tahoma", "white");
+        scoreBG.graphics.beginFill("#00bb00").drawRect(0, 0, 50, 50);
+        scoreText = new createjs.Text(score, "38px Tahoma", "white");   
+        
+        var timeBG = new createjs.Shape();
+        timeBG.graphics.beginFill("#bb0000").drawRect(50, 0, 50, 50);
+        timeText = new createjs.Text(maxTime, "38px Tahoma", "white");
+        timeText.x = 55;
 
-        stage.addChild(koala, cookie, scoreBG, scoreText);
+        stage.addChild(koala, cookie, scoreBG, scoreText, timeBG, timeText);
 
         stage.on("stagemousedown", changeDirections);
         window.addEventListener("keydown", handleKeyDown);
 
         createjs.Ticker.on("tick", tick);
+        window.setTimeout(countdownTime, 1000);
+    }
+    
+    function countdownTime(){
+        maxTime = maxTime - 1;
+        if (maxTime > 0){            
+            window.setTimeout(countdownTime, 1000);
+        }
     }
 
     function handleKeyDown(event) {
@@ -72,18 +89,36 @@
         cookie.y = 0;
         cookie.x = Math.ceil(Math.random() * stage.canvas.width);
     }
+    
+    function showEndGame(endMessage){
+        stage.removeAllChildren();
+        var endText = new createjs.Text(endMessage, "50px Tahoma", "black");
+        endText.textAlign = "center";
+        endText.textBaseline = "middle";
+        endText.x = stage.canvas.width / 2;
+        endText.y = stage.canvas.height / 2;
+        stage.addChild(endText);
+    }
 
     function tick(event) {
+        if (score === cookiesGoal && maxTime > 0) {
+            // win
+            showEndGame("You Win!");
+        } else if (maxTime === 0){
+            // lose
+            showEndGame("You Lose!");
+        }
+        
+        timeText.text = maxTime;
+        
         var koalaTop = koala.y - (koala.getBounds().height / 2);
         var koalaLeft = koala.x - (koala.getBounds().width / 2);
         var koalaRight = koala.x + (koala.getBounds().width / 2);
         var cookieBottom = cookie.y + (cookie.image.width / 2);
         if (cookieBottom >= koalaTop && cookie.x >= koalaLeft && cookie.x <= koalaRight) {
             resetCookie();
-
-            var scoreInt = parseInt(scoreText.text);
-            scoreInt++;
-            scoreText.text = scoreInt;
+            score++;
+            scoreText.text = score;
         }
 
         if (koala.x >= stage.canvas.width || koala.x <= 0) {
