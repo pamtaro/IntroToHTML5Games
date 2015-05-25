@@ -1,66 +1,40 @@
-# Lesson 07 - Game Tracking
+# Lesson 08 - Backgrounds
 The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, be sure to use its full raw path, i.e. `https://raw.githubusercontent.com/pamtaro/IntroToHTML5Games/Lesson-01/images/[filename]`.
 
-## End Game
-To win the game, let's set the goal for the number of cookies to 5 and and limit the time to play at 20 seconds. First these two variables at the top:
+## Parallax Backgrounds
+To get the effect of parallax movement, we are going to use 2 background images that are wider than the pixels of the stage and move them at different rates as the koala moves.
+
+## Offset when loading
+Add the declarations for the `ground` and `background` variables at the top with the other game objects. Then add this to the manifest to load their images:
 ```
-var cookiesGoal = 5;
-var maxTime = 20;
-```
-Next, we'll set up the countdown on the maxTime. It needs to be updated each second, but the `tick` handler updates the stage 20 times per second, so we'll use the built-in `setTimeout` handler in JavaScript to change the maxTime independently of the `tick`:
-```
-window.setTimeout(countdownTime, 1000);
-```
-Create the `countdownTime` function as follows:
-```
-function countdownTime(){
-    maxTime = maxTime - 1;
-    if (maxTime > 0){            
-        window.setTimeout(countdownTime, 1000);
-    }
+{
+    id: "ground",
+    src: "images/foreground.png"
+},
+{
+    id: "background",
+    src: "images/background.png"
 }
 ```
-To see the countdown, we'll need to create the Text to display it on the stage like we did in the previous lesson for the score. Create the `timeText` variable at the top to keep track of the object, then add this to the `handleComplete` function:
+Place the following in the `handleComplete` function to create the 2 backgrounds, then add them to the beginning of the `stage`:
 ```
-var timeBG = new createjs.Shape();
-timeBG.graphics.beginFill("#bb0000").drawRect(50, 0, 50, 50);
-timeText = new createjs.Text(maxTime, "38px Tahoma", "white");
-timeText.x = 55;
+ground = new createjs.Bitmap(loader.getResult("ground"));  
+ground.x = -30;
+background = new createjs.Bitmap(loader.getResult("background"));  
+background.x = -20;
 ```
-Add these time objects to the `stage` and update the text for it in the `tick` handler:
+_Optional:_ move the koala up 50px so its positioned more centrally on the ground.
+
+## Movements
+We already have the `koalaMoveX` variable which tells us the speed and direction to move the koala, so we can reuse this variable on the Backgrounds move logic. When the koala moves in the positive direction, we actually want the backgrounds to move in the opposite X direction. We also don't want to the same speed as the koala since the backgrounds will go offscreen at that rate. Let's create 2 variables at the top to represent the Background's speeds:
 ```
-timeText.text = maxTime;
+var groundSpeed = -0.7;
+var backgroundSpeed = -0.1;
 ```
-## Game Over?
-In the `tick` handler we'll want to add the logic to check if our `cookieGoal` has been reached or if the `maxTime` has expired:
+Then add the following to the `tick` handler to update Backgrounds:
 ```
-if (score === cookiesGoal && maxTime > 0) {
-    // win
-} else if (maxTime === 0){
-    // lose
-}
-```
-When either of those scenarios are reached, we want to empty the stage and display the appropriate text. Since the code for this is very similar (except for the text's message), we'll create it in a separate function:
-```
-function showEndGame(endMessage){
-    stage.removeAllChildren();
-    var endText = new createjs.Text(endMessage, "50px Tahoma", "black");
-    endText.textAlign = "center";
-    endText.textBaseline = "middle";
-    endText.x = stage.canvas.width / 2;
-    endText.y = stage.canvas.height / 2;
-    stage.addChild(endText);
-}
-```
-Now call this function with the appropriate message in the logic we just wrote for "win" or "lose":
-```
-if (score === cookiesGoal && maxTime > 0) {
-    // win
-    showEndGame("You Win!");
-} else if (maxTime === 0){
-    // lose
-    showEndGame("You Lose!");
-}
+ground.x = ground.x + (koalaMoveX*groundSpeed);
+background.x = background.x + (koalaMoveX*backgroundSpeed);
 ```
 
 ## Credits
