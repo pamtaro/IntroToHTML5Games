@@ -16,8 +16,7 @@ var spriteSheet = new createjs.SpriteSheet({
     "images": [loader.getResult("koala")],
     "frames": {"regX": 36, "regY": 51, "width": 72, "height": 102},
     "animations": {
-        "run": [0, 1, "run"],
-        "jump": [2, 2, "run", 0.1]
+        "run": [0, 1, "run"]
     }
 });    
 ```
@@ -25,17 +24,11 @@ var spriteSheet = new createjs.SpriteSheet({
 ## Creating the Sprite
 Once the spritesheet is defined, we can use it in a new "koala" variable which is now a Sprite:
 ```
-koala = new createjs.Sprite(spriteSheet);
+koala = new createjs.Sprite(spriteSheet, "run");
 koala.x = koala.getBounds().width / 2;
 koala.y = stage.canvas.height - (koala.getBounds().height/2);
 ```
-The optional second parameter in the Sprite constructor can be the frame number or name of the animation to play initially when the sprite is drawn. Try changing it between "run" and "jump" here to see the difference, then leave it set to "run".
-
-### Flip the Sprite when it reaches the ends
-Instead of walking backwards, lets flip the koala around whenever it reaches the ends of the stage. Add this to the conditions which check for the koala's X-Position:
-```
-koala.scaleX = koala.scaleX * -1;
-```
+The optional second parameter in the Sprite constructor can be the frame number or name of the animation to play initially when the sprite is drawn. Leaving it out will load the first frame defined in the Spritesheet by default. 
 
 
 ## Credits
