@@ -1,6 +1,6 @@
 (function () {
-    var koala, cookie, ground, background, scoreText, timeText;
-    var groundSpeed = -0.7;
+    var koala, cookie, ground, background, flower, tree, scoreText, timeText;
+    var foregroundSpeed = -0.7;
     var backgroundSpeed = -0.1;
     var koalaMoveX = 10;
     var score = 0;
@@ -27,6 +27,14 @@
         {
             id: "background",
             src: "images/background.png"
+        },
+        {
+            id: "flower",
+            src: "images/flowers.png"
+        },
+        {
+            id: "tree",
+            src: "images/tree.png"
         }
     ];
     var loader = new createjs.LoadQueue();
@@ -58,8 +66,16 @@
         cookie.x = stage.canvas.width / 2;
         cookie.y = 0;
         
+        // foreground
         ground = new createjs.Bitmap(loader.getResult("ground"));  
         ground.x = -30;
+        flower = new createjs.Bitmap(loader.getResult("flower"));
+        flower.y = stage.canvas.height - flower.image.height - 70;
+        flower.x = 100;
+        tree = new createjs.Bitmap(loader.getResult("tree"));
+        tree.y = stage.canvas.height - tree.image.height - 100;
+        tree.x = 800;
+        // background
         background = new createjs.Bitmap(loader.getResult("background"));  
         background.x = -20;
 
@@ -72,7 +88,7 @@
         timeText = new createjs.Text(maxTime, "38px Tahoma", "white");
         timeText.x = 55;
 
-        stage.addChild(background, ground, koala, cookie, scoreBG, scoreText, timeBG, timeText);
+        stage.addChild(background, ground, flower, tree, koala, cookie, scoreBG, scoreText, timeBG, timeText);
 
         stage.on("stagemousedown", changeDirections);
         window.addEventListener("keydown", handleKeyDown);
@@ -141,7 +157,9 @@
         }
 
         koala.x = koala.x + koalaMoveX;
-        ground.x = ground.x + (koalaMoveX*groundSpeed);
+        ground.x = ground.x + (koalaMoveX*foregroundSpeed);
+        flower.x = flower.x + (koalaMoveX*foregroundSpeed);
+        tree.x = tree.x + (koalaMoveX*foregroundSpeed);
         background.x = background.x + (koalaMoveX*backgroundSpeed);
 
         cookie.rotation = cookie.rotation + 45;

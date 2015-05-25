@@ -23,19 +23,46 @@ ground.x = -30;
 background = new createjs.Bitmap(loader.getResult("background"));  
 background.x = -20;
 ```
-_Optional:_ move the koala up 50px so its positioned more centrally on the ground.
+_Optional:_ move the koala up 50px.
 
 ## Movements
-We already have the `koalaMoveX` variable which tells us the speed and direction to move the koala, so we can reuse this variable on the Backgrounds move logic. When the koala moves in the positive direction, we actually want the backgrounds to move in the opposite X direction. We also don't want to the same speed as the koala since the backgrounds will go offscreen at that rate. Let's create 2 variables at the top to represent the Background's speeds:
+We already have the `koalaMoveX` variable which tells us the speed and direction to move the koala, so we can reuse this variable on the Backgrounds move logic. When the koala moves in the positive direction, we actually want the all Backgrounds to move in the opposite X direction. We also don't want the same speed as the koala since the backgrounds will go offscreen at that rate. Let's create 2 variables at the top to represent the Background's speeds:
 ```
-var groundSpeed = -0.7;
+var foregroundSpeed = -0.7;
 var backgroundSpeed = -0.1;
 ```
 Then add the following to the `tick` handler to update Backgrounds:
 ```
-ground.x = ground.x + (koalaMoveX*groundSpeed);
+ground.x = ground.x + (koalaMoveX*foregroundSpeed);
 background.x = background.x + (koalaMoveX*backgroundSpeed);
 ```
-
+### Bonus
+To make the movements more noticeable, let's also add a couple objects to the foreground. Declare the `flower` and `tree` variables in the beginning, then add them to the manifest:
+```
+{
+    id: "flower",
+    src: "images/flowers.png"
+},
+{
+    id: "tree",
+    src: "images/tree.png"
+}
+```
+Then add create their bitmap objects and set their positions:
+```
+flower = new createjs.Bitmap(loader.getResult("flower"));
+flower.y = stage.canvas.height - flower.image.height - 70;
+flower.x = 100;
+tree = new createjs.Bitmap(loader.getResult("tree"));
+tree.y = stage.canvas.height - tree.image.height - 100;
+tree.x = 800;
+```
+Add these objects to the stage, after the ground, but before the koala.
+We can then copy the same movement logic for the ground and reuse it for the `flower` and `tree`:
+```
+flower.x = flower.x + (koalaMoveX*foregroundSpeed);
+tree.x = tree.x + (koalaMoveX*foregroundSpeed);
+```
+_**Congratulations!**_ You're game looks great!
 ## Credits
 Art from GameArtGuppy.com
