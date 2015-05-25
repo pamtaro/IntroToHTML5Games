@@ -1,5 +1,5 @@
 (function () {
-    var koala, cookie;
+    var koala, cookie, scoreText;
     var koalaMoveX = 10;
     var gameCanvas = document.getElementById("gameCanvas");
     var stage = new createjs.Stage(gameCanvas);
@@ -44,30 +44,51 @@
         cookie.x = stage.canvas.width / 2;
         cookie.y = 0;
 
-        stage.addChild(koala, cookie);
-        
-		stage.on("stagemousedown", changeDirections);
+        var scoreBG = new createjs.Shape();
+        scoreBG.graphics.beginFill("#bb0000").drawRect(0, 0, 50, 50);
+        scoreText = new createjs.Text("0", "38px Tahoma", "white");
+
+        stage.addChild(koala, cookie, scoreBG, scoreText);
+
+        stage.on("stagemousedown", changeDirections);
         window.addEventListener("keydown", handleKeyDown);
-        
+
         createjs.Ticker.on("tick", tick);
     }
-    
-    function handleKeyDown(event){
-        if (event.keyCode == 32) { 
-            // spacebar is pressed
+
+    function handleKeyDown(event) {
+        if (event.keyCode == 32) {
+            // spacebar is pressed 
             changeDirections();
         }
     }
-    
-    function changeDirections(){
+
+    function changeDirections() {
         koalaMoveX = koalaMoveX * -1;
         koala.scaleX = koala.scaleX * -1;
     }
 
+    function resetCookie() {
+        cookie.y = 0;
+        cookie.x = Math.ceil(Math.random() * stage.canvas.width);
+    }
+
     function tick(event) {
+        var koalaTop = koala.y - (koala.getBounds().height / 2);
+        var koalaLeft = koala.x - (koala.getBounds().width / 2);
+        var koalaRight = koala.x + (koala.getBounds().width / 2);
+        var cookieBottom = cookie.y + (cookie.image.width / 2);
+        if (cookieBottom >= koalaTop && cookie.x >= koalaLeft && cookie.x <= koalaRight) {
+            resetCookie();
+
+            var scoreInt = parseInt(scoreText.text);
+            scoreInt++;
+            scoreText.text = scoreInt;
+        }
+
         if (koala.x >= stage.canvas.width || koala.x <= 0) {
             changeDirections();
-        } 
+        }
 
         koala.x = koala.x + koalaMoveX;
 
@@ -75,8 +96,7 @@
         cookie.y = cookie.y + 10;
 
         if (cookie.y >= stage.canvas.height) {
-            cookie.y = 0;
-            cookie.x = Math.ceil(Math.random() * stage.canvas.width);
+            resetCookie();
         }
 
         stage.update(event);
