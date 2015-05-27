@@ -1,5 +1,9 @@
 # Lesson 02 - CreateJS Basics
-The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, be sure to use its full raw path, i.e. `https://raw.githubusercontent.com/pamtaro/IntroToHTML5Games/Lesson-01/images/[filename]`.
+The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, you will need to use the full path to the images I have hosted on my Azure account (example of URL `https://pamtaro.blob.core.windows.net/images/[filename]`).
+
+**List of code playground image URLs for this Lesson**
+* https://pamtaro.blob.core.windows.net/images/koala_idle.png
+* https://pamtaro.blob.core.windows.net/images/pastry_cookie01.png
 
 ## CreateJS?
 [CreateJS](http://createjs.com/) is one of many JavaScript libraries that makes building a game easier. CreateJS is useful for building many things, not just games. It is composed of 4 libraries that can be used together or individually: **EaselJS, TweenJS, SoundJS, and PreloadJS**.
