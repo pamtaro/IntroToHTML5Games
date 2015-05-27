@@ -1,5 +1,9 @@
 # Lesson 06 - Collision Detection and Scoring
-The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, be sure to use its full raw path, i.e. `https://raw.githubusercontent.com/pamtaro/IntroToHTML5Games/Lesson-01/images/[filename]`.
+The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, you will need to use the full path to the images I have hosted on my Azure account (example of URL `https://pamtaro.blob.core.windows.net/images/[filename]`).
+
+**List of code playground image URLs for this Lesson**
+* https://pamtaro.blob.core.windows.net/images/koala_spritesheet.png
+* https://pamtaro.blob.core.windows.net/images/pastry_cookie01.png
 
 ## Scoreboard
 Since we now have a moveable/controllable koala and cookies falling from the sky, we'll make the object of the game for the koala to catch a certain number of cookies before it touches the ground. For that, we'll need to add a scoreboard. Let's start with a background for the scoreboard:
