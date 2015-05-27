@@ -111,33 +111,33 @@
                 // lose
                 showEndGame("You Lose!");
             }
-          }
 
-        timeText.text = maxTime;
-
-        var koalaTop = koala.y - (koala.getBounds().height / 2);
-        var koalaLeft = koala.x - (koala.getBounds().width / 2);
-        var koalaRight = koala.x + (koala.getBounds().width / 2);
-        var cookieBottom = cookie.y + (cookie.image.width / 2);
-        if (cookieBottom >= koalaTop && cookie.x >= koalaLeft && cookie.x <= koalaRight) {
-            resetCookie();
-            score++;
-            scoreText.text = score;
+            timeText.text = maxTime;
+    
+            var koalaTop = koala.y - (koala.getBounds().height / 2);
+            var koalaLeft = koala.x - (koala.getBounds().width / 2);
+            var koalaRight = koala.x + (koala.getBounds().width / 2);
+            var cookieBottom = cookie.y + (cookie.image.width / 2);
+            if (cookieBottom >= koalaTop && cookie.x >= koalaLeft && cookie.x <= koalaRight) {
+                resetCookie();
+                score++;
+                scoreText.text = score;
+            }
+    
+            if (koala.x >= stage.canvas.width || koala.x <= 0) {
+                changeDirections();
+            }
+    
+            koala.x = koala.x + koalaMoveX;
+    
+            cookie.rotation = cookie.rotation + 45;
+            cookie.y = cookie.y + 10;
+    
+            if (cookie.y >= stage.canvas.height) {
+                resetCookie();
+            }
+    
+            stage.update(event);
         }
-
-        if (koala.x >= stage.canvas.width || koala.x <= 0) {
-            changeDirections();
-        }
-
-        koala.x = koala.x + koalaMoveX;
-
-        cookie.rotation = cookie.rotation + 45;
-        cookie.y = cookie.y + 10;
-
-        if (cookie.y >= stage.canvas.height) {
-            resetCookie();
-        }
-
-        stage.update(event);
     }
 })();
