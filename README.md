@@ -1,5 +1,9 @@
 # Lesson 03 - Animation
-The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, be sure to use its full raw path, i.e. `https://raw.githubusercontent.com/pamtaro/IntroToHTML5Games/Lesson-01/images/[filename]`.
+The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground,  you will need to use the full path to the images I have hosted on my Azure account (example of URL `https://pamtaro.blob.core.windows.net/images/[filename]`).
+
+**List of code playground image URLs for this Lesson**
+* https://pamtaro.blob.core.windows.net/images/koala_idle.png
+* https://pamtaro.blob.core.windows.net/images/pastry_cookie01.png
 
 ## Start and Cleanup
 If you are continuing from the previous lesson, remove the JavaScript code for the shapes and text, so that we just have the boilerplate and image related code. Your game JavaScript file should now look like this:
