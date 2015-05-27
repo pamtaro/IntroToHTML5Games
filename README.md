@@ -1,5 +1,9 @@
 # Lesson 04 - Sprites and Spritesheets
-The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, be sure to use its full raw path, i.e. `https://raw.githubusercontent.com/pamtaro/IntroToHTML5Games/Lesson-01/images/[filename]`.
+The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, you will need to use the full path to the images I have hosted on my Azure account (example of URL `https://pamtaro.blob.core.windows.net/images/[filename]`).
+
+**List of code playground image URLs for this Lesson**
+* https://pamtaro.blob.core.windows.net/images/koala_spritesheet.png
+* https://pamtaro.blob.core.windows.net/images/pastry_cookie01.png
 
 ## Sprites? Spritesheets?
 Sprites are like Bitmap images, except they are animatable. The koala Bitmap before was moving along the X-axis of the canvas, but the koala image itself was not changing. A Sprite may be changed independently from the rest of the elements on the stage.
