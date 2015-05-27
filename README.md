@@ -37,15 +37,20 @@ Add these time objects to the `stage` and update the text for it in the `tick` h
 timeText.text = maxTime;
 ```
 ## Game Over?
-In the `tick` handler we'll want to add the logic to check if our `cookieGoal` has been reached or if the `maxTime` has expired:
+In the `tick` handler, we know that if the game is over, we don't need to move all our objects and update the stage anymore, so we'll want to wrap everything currently in the `tick` function inside a condition to check if the game is not over. We'll also want to add the logic to check if our `cookieGoal` has been reached or if the `maxTime` has expired, so put this just after that `gameOver` check:
 ```
-if (gameOver === false){
-    if (score === cookiesGoal && maxTime > 0) {
-        // win
-    } else if (maxTime === 0){
-        // lose
+function tick(event){
+    if (gameOver === false){
+        if (score === cookiesGoal && maxTime > 0) {
+            // win
+        } else if (maxTime === 0){
+            // lose
+        }
+        
+        *** rest of tick handler code here ***
+        
     }
-    }
+}
 ```
 When either of those scenarios are reached, we want to empty the stage and display the appropriate text. Since the code for this is very similar (except for the text's message), we'll create it in a separate function:
 ```
