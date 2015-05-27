@@ -1,5 +1,10 @@
 # Lesson 01 - HTML5 Canvas Basics
-The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, be sure to use its full raw path, i.e. `https://raw.githubusercontent.com/pamtaro/IntroToHTML5Games/Lesson-01/images/[filename]`.
+The source files of this branch shows the completed version of what will be built. To follow along in your own environment, you will need to download the images folder. To use the images in a code playground, you will need to use the full path to the images I have hosted on my Azure account (example of URL `https://pamtaro.blob.core.windows.net/images/[filename]`).
+
+**List of code playground image URLs for this Lesson**
+* https://pamtaro.blob.core.windows.net/images/koala_idle.png
+* https://pamtaro.blob.core.windows.net/images/koala_walk01.png
+* https://pamtaro.blob.core.windows.net/images/koala_walk02.png
 
 ## Start with the HTML
 Create your HTML file and add the boilerplate stuff:
